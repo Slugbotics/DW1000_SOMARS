@@ -1,3 +1,13 @@
+#include <DW1000Ranging.h>
+#include <DW1000Constants.h>
+#include <DW1000Device.h>
+#include <require_cpp11.h>
+#include <DW1000CompileOptions.h>
+#include <deprecated.h>
+#include <DW1000Time.h>
+#include <DW1000Mac.h>
+#include <DW1000.h>
+
 /*
  * Copyright (c) 2015 by Thomas Trojer <thomas@trojer.net>
  * Decawave DW1000 library for arduino.
@@ -32,9 +42,9 @@
 #include <DW1000.h>
 
 // connection pins
-const uint8_t PIN_RST = 9; // reset pin
-const uint8_t PIN_IRQ = 2; // irq pin
-const uint8_t PIN_SS = SS; // spi select pin
+const uint8_t PIN_RST = PB12; // reset pin
+const uint8_t PIN_IRQ = PB0; // irq pin
+const uint8_t PIN_SS = PA4; // spi select pin
 
 // messages used in the ranging protocol
 // TODO replace by enum
@@ -272,4 +282,3 @@ void loop() {
         }
     }
 }
-

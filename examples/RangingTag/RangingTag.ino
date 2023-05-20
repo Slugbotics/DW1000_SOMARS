@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2015 by Thomas Trojer <thomas@trojer.net>
  * Decawave DW1000 library for arduino.
@@ -31,9 +32,9 @@
 #include <DW1000.h>
 
 // connection pins
-const uint8_t PIN_RST = 9; // reset pin
-const uint8_t PIN_IRQ = 2; // irq pin
-const uint8_t PIN_SS = SS; // spi select pin
+const uint8_t PIN_RST = PB12; // reset pin
+const uint8_t PIN_IRQ = PB0; // irq pin
+const uint8_t PIN_SS = PA4; // spi select pin
 
 // messages used in the ranging protocol
 // TODO replace by enum
@@ -59,6 +60,9 @@ uint32_t lastActivity;
 uint32_t resetPeriod = 250;
 // reply times (same on both sides for symm. ranging)
 uint16_t replyDelayTimeUS = 3000;
+
+float arr[100];
+int head = 0;
 
 void setup() {
     // DEBUG monitoring
@@ -93,6 +97,10 @@ void setup() {
     receiver();
     transmitPoll();
     noteActivity();
+
+    for (int i = 0; i < 100; i++) {
+      arr[i] = 0.0;
+    }
 }
 
 void noteActivity() {
@@ -189,6 +197,30 @@ void loop() {
             expectedMsgId = POLL_ACK;
             float curRange;
             memcpy(&curRange, data + 1, 4);
+            
+            arr[head++] = curRange;
+            if (head == 100) head = 0;
+
+            float ma = arr[0], mi = arr[0], av = 0.0, std = 0.0;
+            for (int i = 0; i < 100; i++) {
+              if (arr[i] > ma) ma = arr[i];
+              if (arr[i] < mi) mi = arr[i];
+              av += arr[i];
+            }
+
+            for (int i = 0; i < 100; i++) {
+              std += pow(arr[i] - av/100, 2);
+            }
+            std = 10 * sqrt(std);
+            
+            Serial.print(av);
+            Serial.print(" ");
+            Serial.print(ma * 100);
+            Serial.print(" ");
+            Serial.print(mi * 100);
+            Serial.print(" ");
+            Serial.print(std);
+            Serial.print("\n");
             transmitPoll();
             noteActivity();
         } else if (msgId == RANGE_FAILED) {
@@ -198,4 +230,3 @@ void loop() {
         }
     }
 }
-
