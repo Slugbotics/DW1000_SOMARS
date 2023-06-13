@@ -33,6 +33,8 @@ int main() {
     // wait for x amount of time so you can connect to the serial port
     prepare_loop(7);
 
+    printf("pico parasite ready to recive commands\n");
+
     // init LED
     const uint LED_PIN = PICO_DEFAULT_LED_PIN;
     gpio_init(LED_PIN);
@@ -68,6 +70,8 @@ int main() {
 
 void run_zero()
 {
+    printf("triggering zero-th device\n");
+
     gpio_put(BOOT_0_GPIO, 1);
     sleep_ms(BOOT_TO_NRST_DELAY_MS);
     gpio_put(NRST_0_GPIO, 0);
@@ -75,10 +79,14 @@ void run_zero()
     gpio_put(NRST_0_GPIO, 1);
     sleep_ms(NRST_TO_BOOT_DELAY_MS);
     gpio_put(BOOT_0_GPIO, 0);
+
+    printf("finished triggering zero-th device\n");
 }
 
 void run_one()
 {
+    printf("triggering one-th device\n");
+
     gpio_put(BOOT_1_GPIO, 1);
     sleep_ms(BOOT_TO_NRST_DELAY_MS);
     gpio_put(NRST_1_GPIO, 0);
@@ -86,6 +94,8 @@ void run_one()
     gpio_put(NRST_1_GPIO, 1);
     sleep_ms(NRST_TO_BOOT_DELAY_MS);
     gpio_put(BOOT_1_GPIO, 0);
+
+    printf("finished triggering one-th device\n");
 }
 
 // wait for x amount of seconds
