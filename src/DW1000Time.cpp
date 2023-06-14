@@ -157,14 +157,6 @@ float DW1000Time::getAsFloat() const {
 }
 
 /**
- * Return real time in micro seconds
- * @return time in micro seconds
- */
-int DW1000Time::geTimeInt() const {
-	return ((_timestamp%TIME_OVERFLOW)*) >> 32;
-}
-
-/**
  * Return time as distance in meter, d=c*t
  * this is useful for e.g. time of flight
  * @return distance in meters
@@ -174,9 +166,12 @@ float DW1000Time::getAsMeters() const {
 	return (_timestamp%TIME_OVERFLOW)*DISTANCE_OF_RADIO;
 }
 
+/**
+ * Return time as distance in millimets w/o floating poing arithmetic
+ * @return distance in millimeters
+ */
 int DW1000Time::getAsMilli() const {
-	return ((_timestamp%TIME_OVERFLOW)*INT_MAGIC_NUMBER) >> 32;
-
+	return ((_timestamp%TIME_OVERFLOW) * INT_MAGIC_NUMBER) >> 32;
 }
 
 /**
