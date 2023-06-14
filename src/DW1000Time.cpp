@@ -160,8 +160,8 @@ float DW1000Time::getAsFloat() const {
  * Return real time in micro seconds
  * @return time in micro seconds
  */
-float DW1000Time::getAsMicroSeconds() const {
-	return (_timestamp%TIME_OVERFLOW)*TIME_RES;
+int DW1000Time::geTimeInt() const {
+	return ((_timestamp%TIME_OVERFLOW)*) >> 32;
 }
 
 /**
@@ -172,6 +172,11 @@ float DW1000Time::getAsMicroSeconds() const {
 float DW1000Time::getAsMeters() const {
 	//return fmod((float)_timestamp, TIME_OVERFLOW)*DISTANCE_OF_RADIO;
 	return (_timestamp%TIME_OVERFLOW)*DISTANCE_OF_RADIO;
+}
+
+int DW1000Time::getAsMilli() const {
+	return ((_timestamp%TIME_OVERFLOW)*INT_MAGIC_NUMBER) >> 32;
+
 }
 
 /**

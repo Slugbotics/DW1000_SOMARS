@@ -66,6 +66,10 @@ public:
 	static constexpr float MICROSECONDS = 1;
 	static constexpr float NANOSECONDS  = 1e-3;
 	
+	// Using distance of radio * 1e7 * 1/1000 * 2^32 
+	// We can convert the timestamp to the nearest millimeter 
+	// Which completely bypasses the floating point numbers
+	static constexpr int64_t INT_MAGIC_NUMBER = 20150972848l;
 	// constructor
 	DW1000Time();
 	DW1000Time(int64_t time);
@@ -95,6 +99,7 @@ public:
 	float getAsMicroSeconds() const;
 	//void getAsBytes(byte data[]) const; // TODO check why it is here, is it old version of getTimestamp(byte) ?
 	float getAsMeters() const;
+	int getAsMilli() const;
 	
 	DW1000Time& wrap();
 	
