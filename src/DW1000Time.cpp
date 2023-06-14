@@ -166,8 +166,12 @@ float DW1000Time::getAsMeters() const {
 	return (_timestamp%TIME_OVERFLOW)*DISTANCE_OF_RADIO;
 }
 
+/**
+ * Return time as distance in millimets w/o floating poing arithmetic
+ * @return distance in millimeters
+ */
 int DW1000Time::getAsMilli() const {
-	return ((_timestamp%TIME_OVERFLOW)*INT_MAGIC_NUMBER) >> 32;
+	return ((_timestamp%TIME_OVERFLOW) * INT_MAGIC_NUMBER) >> 32;
 }
 
 /**
