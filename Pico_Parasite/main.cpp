@@ -42,7 +42,6 @@ int main() {
     uint32_t prev_time = to_ms_since_boot(get_absolute_time());
     bool led_state = false;
 
-    // recive serial input
     char ch;
     
     // blink LED once a second
@@ -55,6 +54,7 @@ int main() {
             prev_time = current_time;
         }
 
+        // recive serial input
         int c = getchar_timeout_us(1);
         if (c != PICO_ERROR_TIMEOUT)
         {
